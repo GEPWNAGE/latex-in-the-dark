@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const proxy = require('express-http-proxy');
 const latex = require('latex');
 
 const config = {
     latexCommand: 'C:\\texlive\\2016\\bin\\win32\\pdflatex',
+    assetsServer: 'http://localhost:9000',
 };
 
 const app = express();
 const latexBody = bodyParser.text({ type: 'application/x-latex' });
-
-const testDoc = '\\documentclass{article}\\begin{document}asd\\end{document}';
 
 function buildLatex(doc) {
     return latex(doc, {
@@ -47,6 +47,9 @@ app.post('/build', latexBody, (req, res) => {
 
     stream.pipe(res);
 });
+
+// Proxy all other requests to webpack-dev-server
+app.use('/', proxy(config.assetsServer));
 
 app.listen(3000, () => {
     console.log('LaTeX in the Dark editor is running on http://localhost:3000');
