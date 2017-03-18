@@ -28,5 +28,10 @@
     "url-loader": "^0.5.5",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "latex": "0.0.1"
   }
 }
