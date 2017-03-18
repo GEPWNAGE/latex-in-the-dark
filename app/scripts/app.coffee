@@ -4,7 +4,7 @@ _ = require "underscore"
 $ = require "jquery"
 
 ace = require "brace"
-require "brace/mode/html"
+require "brace/mode/latex"
 require "brace/theme/vibrant_ink"
 require "brace/ext/searchbox"
 
@@ -90,7 +90,7 @@ class App
     editor.setHighlightActiveLine false
     editor.setFontSize 20
     editor.setTheme "ace/theme/vibrant_ink"
-    editor.getSession().setMode "ace/mode/html"
+    editor.getSession().setMode "ace/mode/latex"
     editor.session.setOption "useWorker", false
     editor.session.setFoldStyle "manual"
     editor.$blockScrolling = Infinity
