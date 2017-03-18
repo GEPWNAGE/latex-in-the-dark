@@ -2,6 +2,9 @@ $background: #000;
 $gepwnage-yellow: #FFFF44;
 $gepwnage-blue: #013370;
 
+$success: #8BC34A;
+$failure: #F44336;
+
 $button-bg: $gepwnage-yellow;
 $button-text: #000;
 
@@ -218,15 +221,54 @@ body.power-mode #editor {
   z-index: 10;
   bottom: 20px;
   right: 20px;
+
+  & > button {
+    float: right;
+    margin-left: 10px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
 }
 
-.finish-button {
+.check-button {
   float: right;
-  margin-left: 10px;
+
+  &.is-valid {
+    background: $success;
+  }
+
+  &.is-invalid {
+    background: $failure;
+  }
 }
 
-.instructions-button {
-  float: right;
+.error-container {
+  display: none;
+
+  position: absolute;
+  bottom: 300px;
+  right: 20px;
+  width: 480px;
+  padding: 20px;
+
+  color: white;
+  font-size: 10px;
+
+  background: $failure;
+
+  &.is-visible {
+    display: block;
+  }
+
+  div + div {
+    margin-top: 10px;
+  }
 }
 
 .reference-screenshot-container {

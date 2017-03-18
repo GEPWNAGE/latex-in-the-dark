@@ -24,7 +24,7 @@ app.post('/check-build', latexBody, (req, res) => {
     stream.on('error', (error) => {
         res.json({
             status: 'error',
-            error: error.message,
+            errors: error.message.split('\n'),
         });
     });
     stream.on('end', () => {

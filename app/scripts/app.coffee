@@ -39,8 +39,8 @@ class App
 
   EXCLAMATION_EVERY: 10
   EXCLAMATIONS: ["Super!", "Radical!", "Fantastic!", "Great!", "OMG",
-  "Whoah!", ":O", "Nice!", "Splendid!", "Wild!", "Grand!", "Impressive!",
-  "Stupendous!", "Extreme!", "Awesome!"]
+    "Whoah!", ":O", "Nice!", "Splendid!", "Wild!", "Grand!", "Impressive!",
+    "Stupendous!", "Extreme!", "Awesome!"]
 
   currentStreak: 0
   powerMode: false
@@ -59,6 +59,8 @@ class App
     @canvas = @setupCanvas()
     @canvasContext = @canvas.getContext "2d"
     @$finish = $ ".finish-button"
+    @$check = $('.check-button')
+    @$errorContainer = $('.error-container')
 
     @$body = $ "body"
 
@@ -66,6 +68,8 @@ class App
     @debouncedEndStreak = _.debounce @endStreak, @STREAK_TIMEOUT
     @throttledShake = _.throttle @shake, 100, trailing: false
     @throttledSpawnParticles = _.throttle @spawnParticles, 25, trailing: false
+
+    @debouncedCheckBuild = _.debounce(@checkBuild, 500)
 
     @editor = @setupAce()
     @loadContent()
@@ -78,8 +82,10 @@ class App
     @$reference.on "click", @onClickReference
     @$finish.on "click", @onClickFinish
     @$nameTag.on "click", => @getName true
+    @$check.on('click', => @checkBuild())
 
     @getName()
+    @debouncedCheckBuild()
 
     window.requestAnimationFrame? @onFrame
 
@@ -272,5 +278,37 @@ class App
 
     _.defer =>
       @throttledSpawnParticles(token.type) if token
+
+    @debouncedCheckBuild()
+
+  checkBuild: =>
+    doc = @editor.session.getValue()
+
+    @$check
+      .removeClass('is-valid')
+      .removeClass('is-invalid')
+      .text('Checking...')
+      .prop('disabled', true)
+
+    $.ajax({
+      url: '/check-build',
+      method: 'post',
+      contentType: 'application/x-latex',
+      data: doc,
+      success: (result) =>
+        @$errorContainer
+          .empty()
+          .toggleClass('is-visible', result.status == 'error')
+
+        if result.status == 'error'
+          result.errors.forEach((error) => @$errorContainer.append('<div>' + error + '</div>'))
+
+        @$check
+          .toggleClass('is-valid', result.status == 'success')
+          .toggleClass('is-invalid', result.status == 'error')
+          .text(if result.status == 'success' then 'Check passed' else 'Check failed')
+          .prop('disabled', false)
+
+    })
 
 $ -> new App
