@@ -10,6 +10,7 @@ const config = {
 
 const app = express();
 const latexBody = bodyParser.text({ type: 'application/x-latex' });
+const formBody = bodyParser.urlencoded({ extended: true });
 
 function buildLatex(doc) {
     return latex(doc, {
@@ -34,8 +35,8 @@ app.post('/check-build', latexBody, (req, res) => {
     });
 });
 
-app.post('/build', latexBody, (req, res) => {
-    const doc = req.body;
+app.post('/build', formBody, (req, res) => {
+    const doc = req.param('code');
     const stream = buildLatex(doc);
 
     res.type('application/pdf');

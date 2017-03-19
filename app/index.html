@@ -42,6 +42,9 @@
     <button class="check-button">Checking...</button>
   </div>
 
-  <iframe class="result" src="assets/result.html" frameborder="0"><iframe>
+  <form action="/build" method="post" target="result-frame" id="result-form" style="display: none;">
+    <input type="text" name="code" id="result-code" />
+  </form>
+  <iframe class="result" name="result-frame" frameborder="0"></iframe>
 </body>
 </html>

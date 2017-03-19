@@ -61,6 +61,8 @@ class App
     @$finish = $ ".finish-button"
     @$check = $('.check-button')
     @$errorContainer = $('.error-container')
+    @$resultCode = $('#result-code')
+    @$resultForm = $('#result-form')
 
     @$body = $ "body"
 
@@ -259,7 +261,9 @@ class App
     "
 
     if confirm?.toLowerCase() is "yes"
-      @$result[0].contentWindow.postMessage(@editor.getValue(), "*")
+      code = @editor.getValue()
+      @$resultCode.val(code)
+      @$resultForm.submit()
       @$result.show()
 
   onChange: (e) =>
