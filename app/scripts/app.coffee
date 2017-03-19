@@ -294,6 +294,9 @@ class App
       .text('Checking...')
       .prop('disabled', true)
 
+    @$finish
+      .prop('disabled', true)
+
     $.ajax({
       url: '/check-build',
       method: 'post',
@@ -313,6 +316,8 @@ class App
           .text(if result.status == 'success' then 'Check passed' else 'Check failed')
           .prop('disabled', false)
 
+        @$finish
+          .prop('disabled', false)
     })
 
 $ -> new App
