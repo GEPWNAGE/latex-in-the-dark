@@ -1,6 +1,7 @@
 $background: #000;
 $gepwnage-yellow: #FFFF44;
 $gepwnage-blue: #013370;
+$color-counter: $gepwnage-yellow;
 
 $success: #8BC34A;
 $failure: #F44336;
@@ -80,10 +81,10 @@ body.show-instructions {
   background-image: url(~assets/images/logo.png);
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-size: 520px 476px;
+  background-size: (780px * 0.5) (540px * 0.5);
 
   .power-mode & {
-    background-image: url(~assets/images/logo-power.png);
+    background-image: url(~assets/images/logo.png);
     animation: background-power 2s infinite both;
   }
 }
@@ -180,14 +181,14 @@ body.power-mode #editor {
     opacity: 0.5;
     margin-top: 23px;
     height: 8px;
-    background: #4EFFA1;
+    background: $color-counter;
     width: 100%;
     transform: scaleX(0);
   }
 
   .counter {
     font-size: 80px;
-    color: #4EFFA1;
+    color: $color-counter;
     padding-top: 30px;
 
     &.bump {
@@ -200,7 +201,7 @@ body.power-mode #editor {
     bottom: -20px;
     right: 0;
     display: block;
-    color: #4EFFA1;
+    color: $color-counter;
     opacity: 0.75;
     font-size: 20px;
     text-align: right;
@@ -317,7 +318,7 @@ body.power-mode #editor {
   bottom: 20px;
   left: 20px;
   padding: 20px;
-  background: transparentize(#3A9364, 0.25);
+  background: $gepwnage-blue;
   color: white;
   font-size: 56px;
 
