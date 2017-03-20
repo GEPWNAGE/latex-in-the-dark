@@ -3,12 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const proxy = require('express-http-proxy');
-const latex = require('latex');
+const latex = require('./latex');
 const path = require('path');
 
 // Config
 const {
-    LATEX_COMMAND,
+    PDFLATEX_COMMAND = 'pdflatex',
+    BIBTEX_COMMAND = 'bibtex',
     ASSETS_SERVER = 'false',
 } = process.env;
 
@@ -18,7 +19,12 @@ const formBody = bodyParser.urlencoded({ extended: true });
 
 function buildLatex(doc) {
     return latex(doc, {
-        command: LATEX_COMMAND,
+        passes: [
+            [PDFLATEX_COMMAND, "-interaction=nonstopmode"],
+            [BIBTEX_COMMAND],
+            [PDFLATEX_COMMAND, "-interaction=nonstopmode"],
+            [PDFLATEX_COMMAND, "-interaction=nonstopmode"],
+        ],
     });
 }
 
