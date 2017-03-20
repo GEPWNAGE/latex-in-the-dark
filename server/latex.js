@@ -81,24 +81,25 @@ function handleErrors(dirpath, result) {
     });
 }
 
-function executePass(pass, dirpath, callback) {
+function executePass(pass, dirpath, assets, callback) {
     var command = pass.shift();
     pass.push("texput.tex");
 
     //Invoke LaTeX
     var tex = spawn(command, pass, {
         cwd: dirpath,
-        env: process.env
+        env: Object.assign({}, process.env, { TEXINPUTS: assets.join(':') + ':' })
     });
+
     //Wait for LaTeX to finish its thing
     tex.on("exit", callback);
 }
 
-function executePasses(passes, dirpath, callback) {
+function executePasses(passes, dirpath, assets, callback) {
     var pass = passes.shift();
-    executePass(pass, dirpath, function () {
+    executePass(pass, dirpath, assets, function () {
         if (passes.length > 0) {
-            return executePasses(passes, dirpath, callback);
+            return executePasses(passes, dirpath, assets, callback);
         }
 
         return callback();
@@ -129,7 +130,7 @@ module.exports = function(doc, options) {
         var tex_file = fs.createWriteStream(input_path);
 
         tex_file.on("close", function() {
-            executePasses(options.passes, dirpath, function () {
+            executePasses(options.passes, dirpath, options.assets, function () {
                 var output_file = path.join(dirpath, "texput." + format);
                 fs.exists(output_file, function(exists) {
                     if(exists) {

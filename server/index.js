@@ -19,6 +19,9 @@ const formBody = bodyParser.urlencoded({ extended: true });
 
 function buildLatex(doc) {
     return latex(doc, {
+        assets: [
+            path.resolve(__dirname, '../assets'),
+        ],
         passes: [
             [PDFLATEX_COMMAND, "-interaction=nonstopmode"],
             [BIBTEX_COMMAND],
