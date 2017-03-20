@@ -1,8 +1,12 @@
 {
-  "name": "citd-editor",
+  "name": "latex-in-the-dark",
   "version": "0.1.0",
   "description": "",
   "author": "",
+  "scripts": {
+    "server": "node ./server/index.js",
+    "assets-server": "gulp serve"
+  },
   "devDependencies": {
     "autoprefixer-core": "^5.1.7",
     "autoprefixer-loader": "^1.2.0",
@@ -13,6 +17,7 @@
     "deep-extend": "^0.3.2",
     "file-loader": "^0.8.1",
     "gulp": "^3.8.11",
+    "gulp-cli": "^1.2.2",
     "gulp-inline-source": "^1.2.0",
     "gulp-load-plugins": "^0.8.0",
     "gulp-rename": "^1.2.2",
