@@ -103,6 +103,8 @@ class App
     editor.session.setFoldStyle "manual"
     editor.$blockScrolling = Infinity
 
+    editor.renderer.setScrollMargin(0, 130)
+
     editor
 
   setupCanvas: ->
