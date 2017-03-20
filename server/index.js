@@ -1,12 +1,16 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const proxy = require('express-http-proxy');
 const latex = require('latex');
+const path = require('path');
 
-const config = {
-    latexCommand: 'C:\\texlive\\2016\\bin\\win32\\pdflatex',
-    assetsServer: 'http://localhost:9000',
-};
+// Config
+const {
+    LATEX_COMMAND,
+    ASSETS_SERVER = 'false',
+} = process.env;
 
 const app = express();
 const latexBody = bodyParser.text({ type: 'application/x-latex' });
@@ -14,7 +18,7 @@ const formBody = bodyParser.urlencoded({ extended: true });
 
 function buildLatex(doc) {
     return latex(doc, {
-        command: config.latexCommand,
+        command: LATEX_COMMAND,
     });
 }
 
@@ -49,8 +53,12 @@ app.post('/build', formBody, (req, res) => {
     stream.pipe(res);
 });
 
-// Proxy all other requests to webpack-dev-server
-app.use('/', proxy(config.assetsServer));
+if (ASSETS_SERVER !== 'false') {
+    // Proxy all other requests to webpack-dev-server
+    app.use('/', proxy(ASSETS_SERVER));
+} else {
+    app.use('/', express.static(path.resolve(__dirname, '../dist')));
+}
 
 app.listen(3000, () => {
     console.log('LaTeX in the Dark editor is running on http://localhost:3000');
