@@ -30,10 +30,6 @@ config =
     resolveLoader:
       moduleDirectories: ["node_modules"]
 
-    output:
-      path: path.join __dirname, config.paths.tmp
-      filename: "bundle.js"
-
     resolve:
       extensions: ["", ".js", ".coffee", ".scss", ".css", ".ttf"]
       alias:
@@ -59,6 +55,10 @@ config =
         "./#{config.paths.scripts}/app"
       ]
 
+      output:
+        path: path.join __dirname, config.paths.tmp
+        filename: "bundle.js"
+
       plugins: [
         new webpack.HotModuleReplacementPlugin
         new webpack.NoErrorsPlugin()
@@ -68,6 +68,10 @@ config =
       entry: [
         "./#{config.paths.scripts}/app"
       ]
+
+      output:
+        path: path.join __dirname, config.paths.dist
+        filename: "bundle.js"
 
       plugins: [
         new webpack.optimize.DedupePlugin()
@@ -129,8 +133,6 @@ gulp
   .task "inline", ->
     gulp
       .src "#{config.paths.tmp}/index.html"
-      .pipe $.inlineSource()
-      .pipe rename(basename: "editor")
       .pipe gulp.dest("#{config.paths.dist}")
 
   .task "dist", ->
